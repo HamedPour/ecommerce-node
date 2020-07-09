@@ -7,8 +7,18 @@ var expressHbs = require("express-handlebars");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-
+const mongoose = require("mongoose");
 var app = express();
+
+const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
+mongoose.connect(MONGODO_ATLAS_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.on("connected", () => {
+  console.log("Mongoose is connected to Atlas");
+});
 
 // view engine setup
 app.engine(".hbs", expressHbs({ defaultLayout: "layout", extname: ".hbs" }));
