@@ -1,24 +1,24 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var expressHbs = require("express-handlebars");
-
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-const mongoose = require("mongoose");
-var app = express();
-
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const expressHbs = require("express-handlebars");
+const indexRouter = require("./routes/index");
 const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
+const usersRouter = require("./routes/users");
+const mongoose = require("mongoose");
+const app = express();
+
+// Mongo DB Connection
 mongoose.connect(MONGODO_ATLAS_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-mongoose.connection.on("connected", () => {
-  console.log("Mongoose is connected to Atlas");
-});
+// mongoose.connection.on("connected", () => {
+//   console.log("Mongoose is connected to Atlas");
+// });
 
 // view engine setup
 app.engine(".hbs", expressHbs({ defaultLayout: "layout", extname: ".hbs" }));
