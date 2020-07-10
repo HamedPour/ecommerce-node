@@ -4,13 +4,16 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const expressHbs = require("express-handlebars");
-const indexRouter = require("./routes/index");
-const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
-const SECRET = require("./config/dev.secret");
 const passport = require("passport");
 const flash = require("connect-flash");
-
 const mongoose = require("mongoose");
+
+const indexRouter = require("./routes/index");
+const userRouter = require("./routes/user");
+
+const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
+const SECRET = require("./config/dev.secret");
+
 require("./config/passport");
 
 const session = require("express-session");
@@ -42,6 +45,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// routes - ORDER is IMPORTANT
+app.use("/user", userRouter);
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
