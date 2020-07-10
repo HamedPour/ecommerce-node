@@ -6,8 +6,8 @@ const logger = require("morgan");
 const expressHbs = require("express-handlebars");
 const indexRouter = require("./routes/index");
 const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
-const usersRouter = require("./routes/users");
 const mongoose = require("mongoose");
+const session = require("express-session");
 const app = express();
 
 // Mongo DB Connection
@@ -16,9 +16,9 @@ mongoose.connect(MONGODO_ATLAS_URI, {
   useUnifiedTopology: true,
 });
 
-// mongoose.connection.on("connected", () => {
-//   console.log("Mongoose is connected to Atlas");
-// });
+mongoose.connection.on("connected", () => {
+  console.log("Mongoose is connected to Atlas");
+});
 
 // view engine setup
 app.engine(".hbs", expressHbs({ defaultLayout: "layout", extname: ".hbs" }));
@@ -28,10 +28,10 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

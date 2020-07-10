@@ -1,110 +1,21 @@
+{{# each products }}
 <div class="row">
+  {{# each this}}
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
-      <img src="https://i.ytimg.com/vi/EzkHZ31EBUE/hqdefault.jpg" alt="500cc bike" class="image-responsive">
+      <img src="{{this.imagePath}}" alt="{{this.title}}" class="image-responsive">
       <div class="caption">
-        <h3>TomCat</h3>
-        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit dolorum voluptas
-          quibusdam odio, excepturi
-          nemo, quasi </p>
+        <h3>{{this.title}}</h3>
+        <p class="description">{{this.description}}</p>
         <p>
         <div class="clearfix">
-          <div class="price pull-left">£13,000</div>
-          <a href="#" class="btn btn-success pull-right " role="button">Button</a>
+          <div class="price pull-left">£ {{this.price}}</div>
+          <a href="#" class="btn btn-success pull-right " role="button">Add to Cart</a>
         </div>
         </p>
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img
-        src="https://www.nairaland.com/attachments/201123_yamaha_yzf_r1__about_3_million_naira_jpg31c53f0ff301f70d1bb905681f91734f"
-        alt="700cc bike" class="image-responsive">
-      <div class="caption">
-        <h3>Road Rager</h3>
-        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit dolorum voluptas
-          quibusdam odio, excepturi
-          nemo, quasi </p>
-        <p>
-        <div class="clearfix">
-          <div class="price pull-left">£23,000</div>
-          <a href="#" class="btn btn-success pull-right " role="button">Button</a>
-        </div>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img src="https://i.ytimg.com/vi/H1Ls53dfxzw/hqdefault.jpg" alt="1200cc bike" class="image-responsive">
-      <div class="caption">
-        <h3>Ferrari FF1200</h3>
-        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit dolorum voluptas
-          quibusdam odio, excepturi
-          nemo, quasi </p>
-        <p>
-        <div class="clearfix">
-          <div class="price pull-left">£233,000</div>
-          <a href="#" class="btn btn-success pull-right " role="button">Button</a>
-        </div>
-        </p>
-      </div>
-    </div>
-  </div>
+  {{/each}}
 </div>
-<div class="row">
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img src="https://i.ytimg.com/vi/EzkHZ31EBUE/hqdefault.jpg" alt="500cc bike" class="image-responsive">
-      <div class="caption">
-        <h3>TomCat</h3>
-        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit dolorum voluptas
-          quibusdam odio, excepturi
-          nemo, quasi </p>
-        <p>
-        <div class="clearfix">
-          <div class="price pull-left">£13,000</div>
-          <a href="#" class="btn btn-success pull-right " role="button">Button</a>
-        </div>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img
-        src="https://www.nairaland.com/attachments/201123_yamaha_yzf_r1__about_3_million_naira_jpg31c53f0ff301f70d1bb905681f91734f"
-        alt="700cc bike" class="image-responsive">
-      <div class="caption">
-        <h3>Road Rager</h3>
-        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit dolorum voluptas
-          quibusdam odio, excepturi
-          nemo, quasi </p>
-        <p>
-        <div class="clearfix">
-          <div class="price pull-left">£23,000</div>
-          <a href="#" class="btn btn-success pull-right " role="button">Button</a>
-        </div>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img src="https://i.ytimg.com/vi/Rtn06x8sndA/hqdefault.jpg" alt="1200cc bike" class="image-responsive">
-      <div class="caption">
-        <h3>110X Turbo</h3>
-        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit dolorum voluptas
-          quibusdam odio, excepturi
-          nemo, quasi </p>
-        <p>
-        <div class="clearfix">
-          <div class="price pull-left">£38,000</div>
-          <a href="#" class="btn btn-success pull-right " role="button">Button</a>
-        </div>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
+{{/each}}
