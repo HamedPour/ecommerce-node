@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/products");
 const csrf = require("csurf");
-
+const passport = require("passport");
 // session and csrf protections
 const csrfProtection = csrf();
 router.use(csrfProtection);
@@ -34,11 +34,43 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/user/signup", function (req, res, next) {
-  res.render("user/signup", { csrfToken: req.csrfToken() });
+  const errorMessages = req.flash("error");
+  res.render("user/signup", {
+    csrfToken: req.csrfToken(),
+    messages: errorMessages,
+    hasErrors: errorMessages.length > 0,
+  });
 });
 
-router.post("/user/signup", function (req, res, next) {
-  res.redirect("/");
+router.get("/user/profile", function (req, res, next) {
+  res.render("user/profile");
 });
+
+router.post(
+  "user/signup",
+  passport.authenticate("local.signup", {
+    successRedirect: "/user/profile",
+    failureRedirect: "/user/signup",
+    failureFlash: true,
+  })
+);
+
+router.get("/user/signin", function (req, res) {
+  const errorMessages = req.flash("error");
+  res.render("user/signin", {
+    csrfToken: req.csrfToken(),
+    messages: errorMessages,
+    hasErrors: errorMessages.length > 0,
+  });
+});
+
+router.post(
+  "/user/signin",
+  passport.authenticate("local.signin", {
+    successRedirect: "/user/profile",
+    failureRedirect: "/user/signin",
+    failureFlash: true,
+  })
+);
 
 module.exports = router;

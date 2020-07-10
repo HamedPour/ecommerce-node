@@ -11,6 +11,8 @@ const passport = require("passport");
 const flash = require("connect-flash");
 
 const mongoose = require("mongoose");
+require("./config/passport");
+
 const session = require("express-session");
 const app = express();
 
@@ -38,7 +40,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(session({ secret: SECRET, resave: false, saveUninitialized: false }));
 app.use(flash());
 app.use(passport.initialize());
-app.use(password.session());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 
