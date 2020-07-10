@@ -7,6 +7,9 @@ const expressHbs = require("express-handlebars");
 const indexRouter = require("./routes/index");
 const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
 const SECRET = require("./config/dev.secret");
+const passport = require("passport");
+const flash = require("connect-flash");
+
 const mongoose = require("mongoose");
 const session = require("express-session");
 const app = express();
@@ -29,8 +32,13 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: SECRET, resave: false, saveUninitialized: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+// init Sessions
+app.use(session({ secret: SECRET, resave: false, saveUninitialized: false }));
+app.use(flash());
+app.use(passport.initialize());
+app.use(password.session());
 
 app.use("/", indexRouter);
 
