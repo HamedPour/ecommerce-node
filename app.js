@@ -6,6 +6,7 @@ const logger = require("morgan");
 const expressHbs = require("express-handlebars");
 const indexRouter = require("./routes/index");
 const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
+const SECRET = require("./config/dev.secret");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const app = express();
@@ -28,7 +29,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session());
+app.use(session({ secret: SECRET, resave: false, saveUninitialized: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
