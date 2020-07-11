@@ -45,6 +45,13 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Creating login global route variable
+// Keep this in front of all the routes
+app.use(function (req, res, next) {
+  res.locals.login = req.isAuthenticated();
+  next();
+});
+
 // routes - ORDER is IMPORTANT
 app.use("/user", userRouter);
 app.use("/", indexRouter);

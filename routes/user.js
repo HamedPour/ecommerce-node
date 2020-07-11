@@ -11,6 +11,11 @@ router.get("/profile", isLoggedIn, function (req, res) {
   res.render("user/profile");
 });
 
+router.get("/logout", isLoggedIn, function (req, res) {
+  req.logout();
+  res.redirect("/");
+});
+
 // It is important where you put this middleware - it should only
 // be in front of paths that you don't want to show if the user IS lOGGED IN
 router.use("/", isNotLoggedIn, function (req, res, next) {
@@ -52,11 +57,6 @@ router.post(
     failureFlash: true,
   })
 );
-
-router.get("/logout", function (req, res) {
-  req.logout();
-  res.redirect("/");
-});
 
 module.exports = router;
 
