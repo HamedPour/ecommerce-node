@@ -14,6 +14,8 @@ const userRouter = require("./routes/user");
 const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
 const SECRET = require("./config/dev.secret");
 
+require("./config/passport");
+
 const session = require("express-session");
 const MongoSession = require("connect-mongo")(session);
 const app = express();

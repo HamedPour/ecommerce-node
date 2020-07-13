@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Product = require("../models/products");
 const Cart = require("../models/cart");
+const { session } = require("passport");
 
 /* GET products page. */
 router.get("/", function (req, res, next) {
@@ -12,6 +13,8 @@ router.get("/", function (req, res, next) {
     } else {
       // the newProducts step below is needed coz Handlebare has issues
       // with access prototype methods.
+      const successMessage = req.flash("paymentSuccess")[0];
+      console.log(successMessage);
       const newProducts = data.map((data) => {
         return {
           _id: data._id,
@@ -26,7 +29,12 @@ router.get("/", function (req, res, next) {
       for (let i = 0; i < newProducts.length; i += groupSize) {
         productGroup.push(newProducts.slice(i, i + groupSize));
       }
-      res.render("shop/index", { title: "Products", products: productGroup });
+      res.render("shop/index", {
+        title: "Products",
+        products: productGroup,
+        successMessage: successMessage,
+        noMessage: !successMessage,
+      });
     }
   });
 });
@@ -38,12 +46,10 @@ router.get("/add-to-cart/:id", function (req, res) {
   const cart = new Cart(req.session.cart ? req.session.cart : {});
   Product.findById(productID, function (err, product) {
     if (err) {
-      console.log(err.message);
       return res.redirect("/wtf-went-wrong-in-cart-router");
     }
     cart.add(product, product.id);
     req.session.cart = cart;
-    console.log(req.session.cart);
     res.redirect("/");
   });
 });
@@ -60,7 +66,24 @@ router.get("/shopping-cart", function (req, res) {
 });
 
 router.get("/checkout", function (req, res) {
-  res.render("shop/checkout");
+  if (!req.session.cart) {
+    return res.redirect("/");
+  }
+  const cart = new Cart(req.session.cart);
+  res.render("shop/checkout", {
+    totalPrice: cart.totalPrice,
+  });
+});
+
+router.post("/checkout", function (req, res) {
+  if (!req.session.cart) {
+    return res.redirect("/");
+  }
+  // Future To-do-list: setup proper card handling and validation
+  // use some form of paypal moockup
+  req.flash("paymentSuccess", "Your Order Was Placed Successfully!");
+  req.session.cart = null;
+  res.redirect("/");
 });
 
 module.exports = router;
