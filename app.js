@@ -14,9 +14,8 @@ const userRouter = require("./routes/user");
 const MONGODO_ATLAS_URI = require("./config/Atlas.dev");
 const SECRET = require("./config/dev.secret");
 
-require("./config/passport");
-
 const session = require("express-session");
+const MongoSession = require("connect-mongo")(session);
 const app = express();
 
 // Mongo DB Connection
@@ -40,7 +39,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // init Sessions
-app.use(session({ secret: SECRET, resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    secret: SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoSession({ mongooseConnection: mongoose.connection }),
+    cookie: { maxAge: 60 * 60 * 1000 },
+  })
+);
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,6 +56,7 @@ app.use(passport.session());
 // Keep this in front of all the routes
 app.use(function (req, res, next) {
   res.locals.login = req.isAuthenticated();
+  res.locals.session = req.session;
   next();
 });
 
