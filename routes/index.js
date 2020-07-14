@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Product = require("../models/products");
 const Cart = require("../models/cart");
+const Order = require("../models/order");
 const { session } = require("passport");
 
 /* GET products page. */
@@ -13,7 +14,7 @@ router.get("/", function (req, res, next) {
     } else {
       // the newProducts step below is needed coz Handlebare has issues
       // with access prototype methods.
-      const successMessage = req.flash("paymentSuccess")[0];
+      const successMessage = req.flash("paymentSuccess");
       console.log(successMessage);
       const newProducts = data.map((data) => {
         return {
@@ -81,9 +82,23 @@ router.post("/checkout", function (req, res) {
   }
   // Future To-do-list: setup proper card handling and validation
   // use some form of paypal moockup
-  req.flash("paymentSuccess", "Your Order Was Placed Successfully!");
-  req.session.cart = null;
-  res.redirect("/");
+  const cart = new Cart(req.session.cart);
+  const order = new Order({
+    user: req.user,
+    cart: cart,
+    address: req.body.address,
+    name: req.body.name,
+    paymentId: "CX-28382742672864",
+  });
+
+  order.save(function (err, result) {
+    if (err) {
+      console.log("Error while saving order", err.message);
+    }
+    req.flash("paymentSuccess", "Your Order Was Placed Successfully!");
+    req.session.cart = null;
+    res.redirect("/");
+  });
 });
 
 module.exports = router;
